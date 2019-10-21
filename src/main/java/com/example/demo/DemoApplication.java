@@ -1,13 +1,11 @@
 package com.example.demo;
 
 import com.github.javafaker.Faker;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.Random;
@@ -102,7 +100,7 @@ public class DemoApplication {
 			preparedStmt5.setString(3, faker.address().fullAddress());
 			preparedStmt5.setString(4, faker.phoneNumber().phoneNumber());
 			preparedStmt5.setString(5, faker.name().username() + "@gmail.com");
-			preparedStmt5.setString(6, faker.relationships().direct());
+			preparedStmt5.setString(6, faker.avatar().image());
 			preparedStmt5.setInt(7, isDelete);
 			preparedStmt5.execute();
 
@@ -119,7 +117,7 @@ public class DemoApplication {
 			preparedStmt6.setInt(7, faker.number().numberBetween(3,5));
 			preparedStmt6.setInt(8, faker.number().numberBetween(1,10));
 			preparedStmt6.setInt(9, faker.number().numberBetween(1,10));
-			preparedStmt6.setString(10, faker.relationships().any());
+			preparedStmt6.setString(10, faker.avatar().image());
 			preparedStmt6.setInt(11, faker.number().numberBetween(0,1));
 			preparedStmt6.execute();
 
@@ -131,6 +129,43 @@ public class DemoApplication {
 			preparedStmt7.setString(2, "123");
 			preparedStmt7.setInt(3, faker.number().numberBetween(10, 13));
 			preparedStmt7.execute();
+
+//			school
+			String query8 = "insert into schools(school_name, school_year, phone, email, website, address, description, createdAt)" +
+					"values(?,?,?,?,?,?,?,current_timestamp)";
+			PreparedStatement preparedStmt8 = conn.prepareStatement(query8);
+			preparedStmt8.setString(1, faker.name().fullName());
+			preparedStmt8.setInt(2, faker.number().numberBetween(1950,2000));
+			preparedStmt8.setString(3, faker.phoneNumber().phoneNumber());
+			preparedStmt8.setString(4, faker.name().username()+"@edu.com.vn");
+			preparedStmt8.setString(5, faker.name().username()+".edu.vn");
+			preparedStmt8.setString(6, faker.address().fullAddress());
+			preparedStmt8.setString(7, lorem.substring(randomNum, randomNum+100));
+			preparedStmt8.execute();
+
+//			parent
+			String query9 = "insert into parents(last_name, first_name, phone, relationship, avatar, emergency_contact, is_delete, createdAt)" +
+					"values(?,?,?,?,?,?,?,current_timestamp)";
+			PreparedStatement preparedStmt9 = conn.prepareStatement(query9);
+			preparedStmt9.setString(1, faker.name().lastName());
+			preparedStmt9.setString(2, faker.name().firstName());
+			preparedStmt9.setString(3, faker.phoneNumber().phoneNumber());
+			preparedStmt9.setString(4, faker.relationships().parent());
+			preparedStmt9.setString(5, faker.avatar().image());
+			preparedStmt9.setString(6, faker.phoneNumber().cellPhone());
+			preparedStmt9.setInt(7, faker.number().numberBetween(0,1));
+			preparedStmt9.execute();
+
+//			notification
+			String query10 = "insert into notifications(title, author,content, img, notice_class, createdAt)" +
+					"values(?,?,?,?,?,current_timestamp)";
+			PreparedStatement preparedStmt10 = conn.prepareStatement(query10);
+			preparedStmt10.setString(1, faker.name().title());
+			preparedStmt10.setInt(2, faker.number().numberBetween(1,10));
+			preparedStmt10.setString(3, lorem.substring(randomNum, randomNum+300));
+			preparedStmt10.setInt(4, faker.number().numberBetween(1,20));
+			preparedStmt10.setString(5, "[1,2,3]");
+			preparedStmt10.execute();
 		}
 
 		conn.close();
